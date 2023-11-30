@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./mongodb/connect.js";
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.routes.js";
+import listingRoutes from "./routes/listing.routes.js";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cookieParser());
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/listing", listingRoutes);
 
 app.get("/", async (req, res) => {
   res.send("Hello from Elite Estate");
