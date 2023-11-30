@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   getDownloadURL,
@@ -8,15 +8,20 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+} from "../redux/user/userSlice";
+import { useDispatch } from "react-redux";
 
 export default function Profile() {
+  const [updateSuccess, setUpdateSuccess] = useState(false);
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
-  const navigate = useNavigate();
-  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { loading, error, currentUser } = useSelector((state) => state.user);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -27,27 +32,24 @@ export default function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      const res = await fetch("/api/v1/auth/signup", {
+      dispatch(updateUserStart());
+      const res = await fetch(`/api/v1/user/update/${currentUser._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-
       const data = await res.json();
       if (data.success === false) {
-        setError(data.message);
-        setLoading(false);
+        dispatch(updateUserFailure(data.message));
         return;
       }
-      setLoading(false);
-      setError(null);
-      navigate("/signin");
+
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
     } catch (error) {
-      setError(error.message);
-      setLoading(false);
+      dispatch(updateUserFailure(error.message));
     }
   };
 
@@ -79,7 +81,6 @@ export default function Profile() {
       }
     );
   };
-
 
   useEffect(() => {
     if (file) {
@@ -125,6 +126,7 @@ export default function Profile() {
           id="username"
           className="border p-3 rounded-lg w-full"
           onChange={handleChange}
+          defaultValue={currentUser.username}
         />
         <input
           type="email"
@@ -132,6 +134,7 @@ export default function Profile() {
           id="email"
           className="border p-3 rounded-lg w-full"
           onChange={handleChange}
+          defaultValue={currentUser.email}
         />
         <input
           type="password"
@@ -156,7 +159,10 @@ export default function Profile() {
           <span className="text-red-700">Sign Out</span>
         </Link>
       </div>
-      {error && <p className="text-red-500 mt-5">{error}</p>}
+      {error && !updateSuccess && <p className="text-red-500 mt-5">{error}</p>}
+      <p className="text-green-700 mt-5">
+        {updateSuccess && !error? "User is updated successfully!" : ""}
+      </p>
     </div>
   );
 }
