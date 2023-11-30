@@ -188,14 +188,20 @@ export default function Profile() {
         >
           {loading ? "Loading..." : "Update"}
         </button>
+        <Link
+          to="/create-listing"
+          className="bg-green-700 text-white text-center p-3 rounded-lg uppercase hover:opacity-95"
+        >
+          Create Listing
+        </Link>
       </form>
       <div className="flex gap-2 mt-5 justify-between">
-        <Link to="/">
+        <Link to="/signup">
           <span onClick={handleDeleteUser} className="text-red-700">
             Delete Account
           </span>
         </Link>
-        <Link to="/">
+        <Link to="/signin">
           <span onClick={handleSignOut} className="text-red-700">
             Sign Out
           </span>
