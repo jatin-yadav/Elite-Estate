@@ -45,7 +45,7 @@ export default function SignIn() {
       // setLoading(false);
       // setError(null);
       dispatch(signInSuccess(data));
-      navigate("/");
+      navigate("/profile");
     } catch (error) {
       // setError(error.message);
       // setLoading(false);
