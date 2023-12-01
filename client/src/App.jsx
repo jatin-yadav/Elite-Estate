@@ -8,6 +8,7 @@ import {
   CreateListing,
   UpdateListing,
   Listing,
+  Search,
 } from "./pages";
 import { Header } from "./components";
 import PrivateRoute from "./components/PrivateRoute";
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/listing/:listingId" element={<Listing />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
