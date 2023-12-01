@@ -30,6 +30,8 @@ export default function Profile() {
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const { loading, error, currentUser } = useSelector((state) => state.user);
+  const [showListingsError, setShowListingsError] = useState(false);
+  const [userListings, setUserListings] = useState([]);
 
   useEffect(() => {
     if (file) {
@@ -126,10 +128,46 @@ export default function Profile() {
     }
   };
 
+  const handleShowListings = async () => {
+    try {
+      setShowListingsError(false);
+      const res = await fetch(`/api/v1/user/listings/${currentUser._id}`);
+      const data = await res.json();
+      if (data.success === false) {
+        setShowListingsError(true);
+        return;
+      }
+
+      setUserListings(data);
+      console.log(data);
+    } catch (error) {
+      setShowListingsError(true);
+    }
+  };
+
+  const handleListingDelete = async (listingId) => {
+    try {
+      const res = await fetch(`/api/v1/listing/delete/${listingId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+
+      setUserListings((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl text-center font-semibold my-7">Profile</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
           type="file"
           hidden
@@ -195,7 +233,7 @@ export default function Profile() {
           Create Listing
         </Link>
       </form>
-      <div className="flex gap-2 mt-5 justify-between">
+      <div className="flex gap-2 mt-3 justify-between">
         <Link to="/signup">
           <span onClick={handleDeleteUser} className="text-red-700">
             Delete Account
@@ -208,9 +246,57 @@ export default function Profile() {
         </Link>
       </div>
       {error && !updateSuccess && <p className="text-red-500 mt-5">{error}</p>}
-      <p className="text-green-700 mt-5">
+      <p className="text-green-700 mt-3">
         {updateSuccess && !error ? "User is updated successfully!" : ""}
       </p>
+      <button
+        onClick={handleShowListings}
+        className="text-green-700 text-center w-full"
+      >
+        Show Listing
+      </button>
+      <p className="text-red-700 mt-5">
+        {showListingsError ? "Error showing listings" : ""}
+      </p>
+      {userListings && userListings.length > 0 && (
+        <div className="flex flex-col gap-4">
+          <h1 className="text-center mt-7 text-2xl font-semibold">
+            Your Listings
+          </h1>
+          {userListings.map((listing) => (
+            <div
+              key={listing._id}
+              className="border rounded-lg p-3 flex justify-between items-center gap-4"
+            >
+              <Link to={`/listing/${listing._id}`}>
+                <img
+                  src={listing.imageUrls[0]}
+                  alt="listing cover"
+                  className="h-16 w-16 object-contain"
+                />
+              </Link>
+              <Link
+                className="text-slate-700 font-semibold  hover:underline truncate flex-1"
+                to={`/listing/${listing._id}`}
+              >
+                <p>{listing.name}</p>
+              </Link>
+
+              <div className="flex flex-col item-center">
+                <button
+                  onClick={() => handleListingDelete(listing._id)}
+                  className="text-red-700 uppercase"
+                >
+                  Delete
+                </button>
+                <Link to={`/update-listing/${listing._id}`}>
+                  <button className="text-green-700 uppercase">Edit</button>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
