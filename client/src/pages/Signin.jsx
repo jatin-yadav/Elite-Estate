@@ -27,7 +27,7 @@ export default function SignIn() {
     try {
       // setLoading(true);
       dispatch(signInStart());
-      const res = await fetch("/api/v1/auth/signin", {
+      const res = await fetch("https://eliteestate.onrender.com/api/v1/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

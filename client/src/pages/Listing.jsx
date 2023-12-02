@@ -31,7 +31,7 @@ export default function Listing() {
     const fetchListing = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/v1/listing/get/${params.listingId}`);
+        const res = await fetch(`https://eliteestate.onrender.com/api/v1/listing/get/${params.listingId}`);
         const data = await res.json();
         if (data.success === false) {
           setError(true);
