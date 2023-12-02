@@ -27,13 +27,17 @@ export default function SignIn() {
     try {
       // setLoading(true);
       dispatch(signInStart());
-      const res = await fetch("https://eliteestate.onrender.com/api/v1/auth/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        "https://eliteestate.onrender.com/api/v1/auth/signin",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await res.json();
       if (data.success === false) {

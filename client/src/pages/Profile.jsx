@@ -50,13 +50,17 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`https://eliteestate.onrender.com/api/v1/user/update/${currentUser._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `https://eliteestate.onrender.com/api/v1/user/update/${currentUser._id}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const data = await res.json();
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
@@ -99,9 +103,13 @@ export default function Profile() {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`https://eliteestate.onrender.com/api/v1/user/delete/${currentUser._id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://eliteestate.onrender.com/api/v1/user/delete/${currentUser._id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
@@ -116,7 +124,10 @@ export default function Profile() {
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart());
-      const res = await fetch("https://eliteestate.onrender.com/api/v1/auth/signout");
+      const res = await fetch(
+        "https://eliteestate.onrender.com/api/v1/auth/signout",
+        { method: "GET", credentials: "include" }
+      );
       const data = await res.json();
       if (data.success === false) {
         dispatch(signOutUserFailure(data.message));
@@ -131,7 +142,10 @@ export default function Profile() {
   const handleShowListings = async () => {
     try {
       setShowListingsError(false);
-      const res = await fetch(`https://eliteestate.onrender.com/api/v1/user/listings/${currentUser._id}`);
+      const res = await fetch(
+        `https://eliteestate.onrender.com/api/v1/user/listings/${currentUser._id}`,
+        { method: "GET", credentials: "include" }
+      );
       const data = await res.json();
       if (data.success === false) {
         setShowListingsError(true);
@@ -147,9 +161,13 @@ export default function Profile() {
 
   const handleListingDelete = async (listingId) => {
     try {
-      const res = await fetch(`https://eliteestate.onrender.com/api/v1/listing/delete/${listingId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://eliteestate.onrender.com/api/v1/listing/delete/${listingId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
       const data = await res.json();
       if (data.success === false) {
         console.log(data.message);

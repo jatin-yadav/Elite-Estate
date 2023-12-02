@@ -134,6 +134,7 @@ export default function CreateListing() {
       setError(false);
       const res = await fetch("https://eliteestate.onrender.com/api/v1/listing/create", {
         method: "POST",
+        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
         },
