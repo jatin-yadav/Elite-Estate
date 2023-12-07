@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Contact({ listing }) {
+  const { currentUser } = useSelector((state) => state.user);
   const [landlord, setLandlord] = useState(null);
   const [message, setMessage] = useState("");
   const onChange = (e) => {
@@ -11,10 +13,12 @@ export default function Contact({ listing }) {
   useEffect(() => {
     const fetchLandlord = async () => {
       try {
-        const res = await fetch(
-          `https://eliteestate.onrender.com/api/v1/user/${listing.userRef}`,
-          { method: "GET", credentials: "include" }
-        );
+        const res = await fetch(`/api/v1/user/${listing.userRef}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${currentUser.access_token}`,
+          },
+        });
         const data = await res.json();
         setLandlord(data);
       } catch (error) {

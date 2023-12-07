@@ -20,7 +20,7 @@ export default function SignUp() {
     try {
       setLoading(true);
       const res = await fetch(
-        "https://eliteestate.onrender.com/api/v1/auth/signup",
+        "/api/v1/auth/signup",
         {
           method: "POST",
           credentials: "include",

@@ -123,6 +123,7 @@ export default function CreateListing() {
     }
   };
 
+  console.log(currentUser);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -132,10 +133,10 @@ export default function CreateListing() {
         return setError("Discount price must be lower than regular price");
       setLoading(true);
       setError(false);
-      const res = await fetch("https://eliteestate.onrender.com/api/v1/listing/create", {
+      const res = await fetch("/api/v1/listing/create", {
         method: "POST",
-        credentials: 'include',
         headers: {
+          Authorization: `Bearer ${currentUser.access_token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

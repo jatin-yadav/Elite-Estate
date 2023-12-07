@@ -28,7 +28,7 @@ export default function SignIn() {
       // setLoading(true);
       dispatch(signInStart());
       const res = await fetch(
-        "https://eliteestate.onrender.com/api/v1/auth/signin",
+        "/api/v1/auth/signin",
         {
           method: "POST",
           credentials: "include",
@@ -41,18 +41,12 @@ export default function SignIn() {
 
       const data = await res.json();
       if (data.success === false) {
-        // setError(data.message);
-        // setLoading(false);
         dispatch(signInFailure(data.message));
         return;
       }
-      // setLoading(false);
-      // setError(null);
       dispatch(signInSuccess(data));
       navigate("/profile");
     } catch (error) {
-      // setError(error.message);
-      // setLoading(false);
       dispatch(signInFailure(error.message));
     }
   };

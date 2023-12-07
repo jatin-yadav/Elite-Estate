@@ -15,10 +15,10 @@ function Home() {
   useEffect(() => {
     const fetchOfferListings = async () => {
       try {
-        const res = await fetch(
-          "https://eliteestate.onrender.com/api/v1/listing/get?offer=true&limit=3",
-          { method: "GET", credentials: "include" }
-        );
+        const res = await fetch("/api/v1/listing/get?offer=true&limit=3", {
+          method: "GET",
+          credentials: "include",
+        });
         const data = await res.json();
         setOfferListings(data);
         fetchRentListings();
@@ -28,10 +28,10 @@ function Home() {
     };
     const fetchRentListings = async () => {
       try {
-        const res = await fetch(
-          "https://eliteestate.onrender.com/api/v1/listing/get?type=rent&limit=3",
-          { method: "GET", credentials: "include" }
-        );
+        const res = await fetch("/api/v1/listing/get?type=rent&limit=3", {
+          method: "GET",
+          credentials: "include",
+        });
         const data = await res.json();
         setRentListings(data);
         fetchSaleListings();
@@ -42,10 +42,10 @@ function Home() {
 
     const fetchSaleListings = async () => {
       try {
-        const res = await fetch(
-          "https://eliteestate.onrender.com/api/v1/listing/get?type=sale&limit=3",
-          { method: "GET", credentials: "include" }
-        );
+        const res = await fetch("/api/v1/listing/get?type=sale&limit=3", {
+          method: "GET",
+          credentials: "include",
+        });
         const data = await res.json();
         setSaleListings(data);
       } catch (error) {

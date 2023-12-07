@@ -2,6 +2,7 @@ import User from "../mongodb/models/user.model.js";
 import Listing from "../mongodb/models/listing.model.js";
 import { errorHandler } from "../utils/error.js";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const test = (req, res) => {
   res.send("Hello test from user of Elite Estate!");
@@ -25,10 +26,13 @@ export const updateUser = async (req, res, next) => {
       },
       { new: true }
     );
+    const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+    const { password, ...rest } = updatedUser._doc;
+    const response = { ...rest, access_token: token };
 
-    const { password, ...others } = updatedUser._doc;
-
-    res.status(200).json(others);
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }
@@ -47,6 +51,7 @@ export const deleteUser = async (req, res, next) => {
 };
 
 export const getUserListings = async (req, res, next) => {
+  console.log(req.user);
   if (req.user.id === req.params.id) {
     try {
       const listings = await Listing.find({ userRef: req.params.id });
