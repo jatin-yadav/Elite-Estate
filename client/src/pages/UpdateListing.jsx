@@ -36,7 +36,7 @@ export default function CreateListing() {
   useEffect(() => {
     const fetchListing = async () => {
       const listingId = params.listingId;
-      const res = await fetch(`/api/v1/listing/get/${listingId}`, {
+      const res = await fetch(`https://eliteestate.onrender.com/api/v1/listing/get/${listingId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${currentUser.access_token}`,
@@ -153,7 +153,7 @@ export default function CreateListing() {
         return setError("Discount price must be lower than regular price");
       setLoading(true);
       setError(false);
-      const res = await fetch(`/api/v1/listing/update/${params.listingId}`, {
+      const res = await fetch(`https://eliteestate.onrender.com/api/v1/listing/update/${params.listingId}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${currentUser.access_token}`,

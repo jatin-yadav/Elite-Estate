@@ -13,7 +13,7 @@ export default function Contact({ listing }) {
   useEffect(() => {
     const fetchLandlord = async () => {
       try {
-        const res = await fetch(`/api/v1/user/${listing.userRef}`, {
+        const res = await fetch(`https://eliteestate.onrender.com/api/v1/user/${listing.userRef}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${currentUser.access_token}`,

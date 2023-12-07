@@ -14,7 +14,7 @@ function OAuth() {
       const result = await signInWithPopup(auth, provider);
 
       const res = await fetch(
-        "/api/v1/auth/google",
+        "https://eliteestate.onrender.com/api/v1/auth/google",
         {
           method: "POST",
           headers: {

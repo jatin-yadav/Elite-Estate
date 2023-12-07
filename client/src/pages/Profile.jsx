@@ -50,7 +50,7 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/api/v1/user/update/${currentUser._id}`, {
+      const res = await fetch(`https://eliteestate.onrender.com/api/v1/user/update/${currentUser._id}`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -101,7 +101,7 @@ export default function Profile() {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/v1/user/delete/${currentUser._id}`, {
+      const res = await fetch(`https://eliteestate.onrender.com/api/v1/user/delete/${currentUser._id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${currentUser.access_token}`,
@@ -121,7 +121,7 @@ export default function Profile() {
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart());
-      const res = await fetch("/api/v1/auth/signout", {
+      const res = await fetch("https://eliteestate.onrender.com/api/v1/auth/signout", {
         method: "GET",
       });
       const data = await res.json();
@@ -138,7 +138,7 @@ export default function Profile() {
   const handleShowListings = async () => {
     try {
       setShowListingsError(false);
-      const res = await fetch(`/api/v1/user/listings/${currentUser._id}`, {
+      const res = await fetch(`https://eliteestate.onrender.com/api/v1/user/listings/${currentUser._id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${currentUser.access_token}`,
@@ -159,7 +159,7 @@ export default function Profile() {
 
   const handleListingDelete = async (listingId) => {
     try {
-      const res = await fetch(`/api/v1/listing/delete/${listingId}`, {
+      const res = await fetch(`https://eliteestate.onrender.com/api/v1/listing/delete/${listingId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${currentUser.access_token}`,
