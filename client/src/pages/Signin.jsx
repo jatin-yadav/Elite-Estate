@@ -31,7 +31,6 @@ export default function SignIn() {
         "https://eliteestate.onrender.com/api/v1/auth/signin",
         {
           method: "POST",
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },

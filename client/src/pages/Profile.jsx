@@ -52,7 +52,6 @@ export default function Profile() {
       dispatch(updateUserStart());
       const res = await fetch(`https://eliteestate.onrender.com/api/v1/user/update/${currentUser._id}`, {
         method: "POST",
-        credentials: "include",
         headers: {
           Authorization: `Bearer ${currentUser.access_token}`,
           "Content-Type": "application/json",
